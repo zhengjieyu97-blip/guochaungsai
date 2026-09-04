@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#183b36">
+  <title>邻里智护 | 原型演示</title>
+  <link rel="stylesheet" href="styles.css?v=4">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-block">
+        <div class="brand-mark" aria-hidden="true" data-icon="heart-hand"></div>
+        <div>
+          <div class="brand-name">邻里智护</div>
+          <div class="brand-subtitle">照护协同工作台</div>
+        </div>
+      </div>
+
+      <div class="environment-label">
+        <span class="status-dot"></span>
+        本地演示环境
+      </div>
+
+      <nav class="primary-nav" aria-label="主导航">
+        <button class="nav-item active" data-view="events">
+          <span class="nav-icon" data-icon="layout-dashboard" aria-hidden="true"></span>
+          <span>事件中心</span>
+          <span class="nav-count" id="navEventCount">2</span>
+        </button>
+        <button class="nav-item" data-view="people">
+          <span class="nav-icon" data-icon="users-round" aria-hidden="true"></span>
+          <span>照护对象</span>
+        </button>
+        <button class="nav-item" data-view="simulator">
+          <span class="nav-icon" data-icon="wand-sparkles" aria-hidden="true"></span>
+          <span>模拟事件台</span>
+        </button>
+        <button class="nav-item" data-view="dashboard">
+          <span class="nav-icon" data-icon="chart-no-axes-combined" aria-hidden="true"></span>
+          <span>社区看板</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-spacer"></div>
+
+      <div class="sidebar-caption">
+        <span class="caption-kicker">第一阶段</span>
+        <strong>一老一小 · 闭环处置</strong>
+        <span>所有演示数据均为虚构数据</span>
+      </div>
+
+      <div class="sidebar-user" id="sidebarUser">
+        <div class="avatar avatar-teal">赵</div>
+        <div class="sidebar-user-copy">
+          <strong>赵敏</strong>
+          <span>社区工作人员</span>
+        </div>
+        <span class="online-dot" title="当前角色在线"></span>
+      </div>
+    </aside>
+
+    <main class="main-shell">
+      <header class="topbar">
+        <div class="topbar-context">
+          <span class="context-kicker">宁安里社区</span>
+          <h1 id="pageTitle">事件中心</h1>
+        </div>
+
+        <div class="topbar-actions">
+          <div class="save-indicator">
+            <span class="save-dot"></span>
+            演示数据已保存
+          </div>
+          <div class="notification-wrap">
+            <button class="icon-button notification-button" id="notificationButton" title="查看站内通知" aria-label="查看站内通知">
+              <span aria-hidden="true" data-icon="bell"></span>
+              <span class="notification-count" id="notificationCount">0</span>
+            </button>
+          </div>
+          <label class="role-switcher">
+            <span>当前视角</span>
+            <select id="roleSelect" aria-label="切换演示角色">
+              <option value="COMMUNITY_WORKER">社区工作人员 · 赵敏</option>
+              <option value="FAMILY">家属/监护人 · 李晨</option>
+              <option value="RESPONDER">社区响应人 · 张师傅</option>
+              <option value="ADMIN">社区管理员</option>
+            </select>
+          </label>
+        </div>
+      </header>
+
+      <div class="page-root" id="pageRoot"></div>
+    </main>
+  </div>
+
+  <div class="notification-panel" id="notificationPanel" aria-hidden="true"></div>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <aside class="detail-drawer" id="detailDrawer" aria-hidden="true"></aside>
+  <div class="modal-root" id="modalRoot"></div>
+  <div class="toast-root" id="toastRoot" aria-live="polite"></div>
+
+  <script src="app.js?v=4" defer></script>
+</body>
+</html>
