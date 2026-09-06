@@ -11,8 +11,36 @@ down_revision = None
 branch_labels = None
 depends_on = None
 
+_FIRST_STAGE_TABLES = {
+    "users",
+    "households",
+    "care_subjects",
+    "relationships",
+    "risk_profiles",
+    "care_events",
+    "assignments",
+    "action_logs",
+    "notifications",
+}
+
 
 def upgrade() -> None:
+    # Older demo builds called SQLAlchemy ``create_all`` during startup. If
+    # that complete schema is already present, this first migration only needs
+    # to record its revision; trying to create the tables again causes SQLite's
+    # "table already exists" error and does not preserve a usable migration
+    # history.
+    existing_tables = set(sa.inspect(op.get_bind()).get_table_names())
+    initialized_tables = existing_tables & _FIRST_STAGE_TABLES
+    if initialized_tables == _FIRST_STAGE_TABLES:
+        return
+    if initialized_tables:
+        missing_tables = ", ".join(sorted(_FIRST_STAGE_TABLES - initialized_tables))
+        raise RuntimeError(
+            "The database contains only part of the first-stage schema; "
+            f"missing tables: {missing_tables}. Restore a backup before migrating."
+        )
+
     op.create_table(
         "users",
         sa.Column("id", sa.String(length=40), primary_key=True),

@@ -11,7 +11,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.sessions import SessionMiddleware
 
 from .config import ENABLE_SCHEDULER, FRONTEND_ORIGINS, SESSION_SECRET
-from .db import create_tables, SessionLocal
+from .db import migrate_database, SessionLocal
 from .routes import router
 from .seed import seed_database
 from .services import DomainError
@@ -20,7 +20,7 @@ from .scheduler import timeout_loop
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    create_tables()
+    migrate_database()
     db = SessionLocal()
     try:
         seed_database(db)
