@@ -22,6 +22,14 @@ cd ..
 
 应用启动时会自动执行 `alembic upgrade head`。已有旧版演示数据库会被自动登记为当前迁移版本，不会删除其中的数据；无需在启动后再次执行迁移命令。
 
+停止本地服务：
+
+```powershell
+.\stop.ps1
+```
+
+停止脚本只处理本项目在 `8000` 和 `5173` 端口启动的服务；如果启动时使用了自定义端口，请传入相同的 `-BackendPort` 和 `-FrontendPort` 参数。
+
 ## 目录
 
 - `backend/app/`：FastAPI、SQLAlchemy、SQLite、风险策略和照护事件命令。

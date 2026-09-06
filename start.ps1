@@ -18,4 +18,4 @@ Start-Process -WindowStyle Hidden -FilePath 'npm.cmd' -ArgumentList @('run', 'de
 Write-Host "邻里智护已启动："
 Write-Host "前端：http://127.0.0.1:$FrontendPort/login"
 Write-Host "API 文档：http://127.0.0.1:$BackendPort/docs"
-Write-Host "关闭服务：结束对应的 python / node 进程即可。"
+Write-Host "停止服务：.\stop.ps1 -BackendPort $BackendPort -FrontendPort $FrontendPort"
