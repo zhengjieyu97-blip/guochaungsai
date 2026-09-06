@@ -160,9 +160,11 @@ onMounted(load)
   <div class="page-wrap">
     <header class="page-heading">
       <div>
-        <p class="eyebrow"><span class="eyebrow-dot"></span>社区事件中心 / 实时工作流</p>
-        <h1>今天，先把最要紧的事接住。</h1>
-        <p>所有照护事件都沿着同一条时间线推进。风险等级、当前责任人和下一步动作，在这里保持透明可见。</p>
+        <div class="page-title-row">
+          <h1>照护事件中心</h1>
+          <span class="page-status-tag">实时协同工作台</span>
+        </div>
+        <p>全社区老人、儿童异常事件多维分级与网格化处置调度队列</p>
       </div>
       <div class="heading-actions">
         <RouterLink class="button button-secondary" to="/simulator">
@@ -177,8 +179,8 @@ onMounted(load)
     <section class="metric-grid" aria-label="事件概览">
       <div class="metric-card accent-coral">
         <div class="metric-label">
-          <span>待处理</span>
-          <Siren :size="16" />
+          <span>待响应事件</span>
+          <Siren :size="18" />
         </div>
         <strong class="metric-value">{{ metrics.pending }}</strong>
         <small class="metric-note">需要尽快响应并派发责任人</small>
@@ -187,7 +189,7 @@ onMounted(load)
       <div class="metric-card accent-amber">
         <div class="metric-label">
           <span>处理中 / 待确认</span>
-          <Clock3 :size="16" />
+          <Clock3 :size="18" />
         </div>
         <strong class="metric-value">{{ metrics.active }}</strong>
         <small class="metric-note">已接单正在上门或等待闭环确认</small>
@@ -195,32 +197,32 @@ onMounted(load)
 
       <div class="metric-card accent-mint">
         <div class="metric-label">
-          <span>已超时升级</span>
-          <TimerReset :size="16" />
+          <span>超时升级流转</span>
+          <TimerReset :size="18" />
         </div>
         <strong class="metric-value">{{ metrics.overdue }}</strong>
-        <small class="metric-note">已触发自动升级流转</small>
+        <small class="metric-note">已触发超时自动升级机制</small>
       </div>
 
       <div class="metric-card accent-ink">
         <div class="metric-label">
-          <span>已闭环事件</span>
-          <CheckCircle2 :size="16" />
+          <span>已闭环归档</span>
+          <CheckCircle2 :size="18" />
         </div>
         <strong class="metric-value">{{ metrics.closed }}</strong>
-        <small class="metric-note">家属或社区已确认解决</small>
+        <small class="metric-note">家属或社区已确认解决完成</small>
       </div>
     </section>
 
     <section class="panel">
       <div class="panel-head">
         <div>
-          <h2>事件队列</h2>
-          <p>当前视角下可见的全部照护事件</p>
+          <h2>事件实时队列</h2>
+          <p>按优先级与发生时间实时排队的照护事件</p>
         </div>
         <span class="icon-text muted-text">
           <Filter :size="15" />
-          共 {{ events.length }} 条事件
+          当前共 {{ events.length }} 条事件
         </span>
       </div>
 
@@ -341,7 +343,7 @@ onMounted(load)
                 <button
                   v-if="canOperate && event.status === 'ASSIGNED'"
                   class="button button-primary"
-                  style="min-height: 34px; padding: 0 12px; font-size: 13px;"
+                  style="min-height: 34px; padding: 0 14px; font-size: 13px;"
                   @click="accept(event)"
                 >
                   接单

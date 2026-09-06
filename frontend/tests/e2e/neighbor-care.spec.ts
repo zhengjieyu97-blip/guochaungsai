@@ -22,7 +22,7 @@ test('工作台保持清晰的桌面字号与操作尺寸', async ({ page }) => 
   await page.goto('/login')
   await page.getByRole('button', { name: /社区工作人员/ }).click()
 
-  await expect(page.getByRole('heading', { name: '今天，先把最要紧的事接住。' })).toHaveCSS('font-size', '52px')
+  await expect(page.getByRole('heading', { name: '照护事件中心' })).toHaveCSS('font-size', '52px')
   await expect(page.locator('.metric-card').first()).toHaveCSS('min-height', '148px')
   await expect(page.locator('.button').first()).toHaveCSS('min-height', '46px')
 })

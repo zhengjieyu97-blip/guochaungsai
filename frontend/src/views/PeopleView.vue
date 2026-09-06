@@ -60,9 +60,11 @@ onMounted(load)
   <div class="page-wrap">
     <header class="page-heading">
       <div>
-        <p class="eyebrow"><span class="eyebrow-dot"></span>照护对象 / 社区档案</p>
-        <h1>先认识每一个需要被看见的人。</h1>
-        <p>这里展示和当前视角相关的老人、儿童与照护关系。位置保持模糊，信息只服务于照护与协同调度。</p>
+        <div class="page-title-row">
+          <h1>照护对象档案</h1>
+          <span class="page-status-tag">一人一档花名册</span>
+        </div>
+        <p>春和里社区纳入重点关怀的老人、儿童基本情况、风险标签及监护联系人档案</p>
       </div>
       <div class="heading-actions">
         <span class="icon-text muted-text">
@@ -105,7 +107,7 @@ onMounted(load)
         <strong>没有匹配对象</strong>
         <p>换一个关键词或清空筛选条件试试看。</p>
       </div>
-      <div v-else class="people-grid" style="padding: 20px;">
+      <div v-else class="people-grid" style="padding: 24px;">
         <button
           v-for="person in people"
           :key="person.id"

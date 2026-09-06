@@ -125,7 +125,7 @@ async function runNoResponse() {
 }
 
 async function reset() {
-  if (!confirm('确定要恢复初始演示数据吗？')) return
+  if (!confirm('确定要重置并恢复初始演示数据吗？')) return
   try {
     await api.reset()
     push('演示数据已恢复')
@@ -146,9 +146,11 @@ onMounted(load)
   <div class="page-wrap">
     <header class="page-heading">
       <div>
-        <p class="eyebrow"><span class="eyebrow-dot"></span>模拟事件台 / 场景推演</p>
-        <h1>把三分钟的闭环，按下播放。</h1>
-        <p>每个按钮都会调用真实后端业务流程：创建事件、动态分级、派发任务、通知责任人，并无缝进入协同操作详情页。</p>
+        <div class="page-title-row">
+          <h1>模拟演练控制台</h1>
+          <span class="page-status-tag">闭环仿真沙盒</span>
+        </div>
+        <p>一键模拟典型照护异常事件触发，实时观察事件生成、风险评估、智能派单与升级流转</p>
       </div>
       <div class="heading-actions">
         <button v-if="canReset" class="button button-secondary" @click="reset">
@@ -161,8 +163,8 @@ onMounted(load)
       <section class="panel">
         <div class="panel-head">
           <div>
-            <h2>快捷演示场景</h2>
-            <p>六类固定事件 + 一键超时升级模拟</p>
+            <h2>快捷仿真场景</h2>
+            <p>包含六类典型事件触发与超时升级测试</p>
           </div>
           <span class="icon-text muted-text">
             <TimerReset :size="16" />即时写入时间线
@@ -209,20 +211,20 @@ onMounted(load)
       <aside class="simulator-aside">
         <section class="playbook">
           <p class="eyebrow" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.15); color: #2dd4bf;">
-            三分钟全流程演示路径
+            全流程业务闭环路径
           </p>
-          <h3>从发现到闭环</h3>
+          <h3>三步完成闭环协同</h3>
           <p>选择一个场景后，沿着详情页右侧操作区完成一次真实业务闭环。</p>
           <div class="playbook-steps">
-            <span class="playbook-step"><b>01</b> 异常创建 + 风险分级</span>
+            <span class="playbook-step"><b>01</b> 异常感应 + 风险分级</span>
             <span class="playbook-step"><b>02</b> 接单上门 + 处置记录</span>
             <span class="playbook-step"><b>03</b> 家属/监护人 确认关闭</span>
           </div>
         </section>
 
         <section class="simulator-note">
-          <strong><HeartPulse :size="18" style="color: var(--primary);" /> 为什么要有模拟台？</strong>
-          <p>第一阶段无需摄像头、手环或真实通信网关。模拟事件使用同一套后端事件引擎与状态机，证明核心闭环在本地独立完整运行。</p>
+          <strong><HeartPulse :size="18" style="color: var(--primary);" /> 仿真沙盒机制</strong>
+          <p>无需外部硬件依赖，直接调用服务端真实事件引擎与状态机，验证核心业务逻辑与数据流转的一致性。</p>
         </section>
 
         <section class="simulator-note">

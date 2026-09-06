@@ -1,9 +1,25 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { RouterLink, RouterView, useRoute, useRouter } from 'vue-router'
-import { Activity, Bell, BookOpenCheck, CalendarClock, ChevronDown, CircleHelp, Command, LayoutDashboard, LogOut, Menu, RotateCcw, Users, X } from 'lucide-vue-next'
+import {
+  Activity,
+  Bell,
+  HeartHandshake,
+  CalendarClock,
+  ChevronDown,
+  CircleHelp,
+  Command,
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  RotateCcw,
+  Users,
+  X,
+  Radio,
+  Sparkles
+} from 'lucide-vue-next'
 import { api, type NotificationItem, type Role } from '@/services/api'
-import { roleLabels, useSessionStore } from '@/stores/session'
+import { roleLabels, roleDetails, useSessionStore } from '@/stores/session'
 import { useToast } from '@/composables/useToast'
 
 const route = useRoute()
@@ -18,7 +34,7 @@ const loadingNotifications = ref(false)
 const navItems = [
   { to: '/events', label: '事件中心', note: '实时响应与处置', icon: Activity },
   { to: '/people', label: '照护对象', note: '一人一档花名册', icon: Users },
-  { to: '/simulator', label: '模拟事件台', note: '无硬件演示场景', icon: CalendarClock },
+  { to: '/simulator', label: '模拟事件台', note: '无硬件演示推演', icon: CalendarClock },
   { to: '/dashboard', label: '社区看板', note: '决策指标与分布', icon: LayoutDashboard },
 ]
 
@@ -44,7 +60,7 @@ async function loadNotifications() {
 async function switchRole(event: Event) {
   const nextRole = (event.target as HTMLSelectElement).value as Role
   if (await session.switchRole(nextRole)) {
-    push(`已切换到 ${roleLabels[nextRole]} 视角`)
+    push(`已切换至 ${roleLabels[nextRole]} 视角`)
     await loadNotifications()
     router.push('/events')
   } else {
@@ -75,10 +91,10 @@ async function logout() {
 }
 
 async function resetDemo() {
-  if (!confirm('确定要恢复初始演示数据吗？当前演示操作会被清除。')) return
+  if (!confirm('确定要重置当前数据并恢复初始演示状态吗？')) return
   try {
     await api.reset()
-    push('演示数据已恢复')
+    push('演示数据已恢复初始状态')
     router.push('/events')
     await loadNotifications()
   } catch (err) {
@@ -96,26 +112,37 @@ onMounted(loadNotifications)
 <template>
   <div class="shell">
     <aside class="sidebar" :class="{ open: mobileOpen }">
+      <!-- Sidebar Brand -->
       <div class="sidebar-brand">
-        <div class="brand-symbol small">
-          <BookOpenCheck :size="20" />
+        <div class="brand-symbol">
+          <HeartHandshake :size="22" stroke-width="2.2" />
         </div>
-        <span>邻里智护</span>
+        <div class="sidebar-brand-text">
+          <span class="brand-title">邻里智护</span>
+          <span class="brand-subtitle">NEIGHBOR CARE</span>
+        </div>
         <button class="icon-button sidebar-close" aria-label="关闭导航" @click="mobileOpen = false">
           <X :size="18" />
         </button>
       </div>
 
-      <div class="sidebar-context">
-        <span class="context-kicker">当前社区空间</span>
-        <strong>春和里完整社区</strong>
-        <span class="context-status">
-          <i></i> 本地演示环境已就绪
-        </span>
+      <!-- Current User Profile Pill -->
+      <div class="sidebar-profile-card">
+        <div class="profile-avatar">
+          {{ session.user?.name?.slice(0, 1) }}
+        </div>
+        <div class="profile-info">
+          <div class="profile-name-row">
+            <strong>{{ session.user?.name }}</strong>
+            <span class="role-badge">{{ session.role ? roleLabels[session.role] : '在线' }}</span>
+          </div>
+          <span class="community-tag">春和里社区</span>
+        </div>
       </div>
 
+      <!-- Main Navigation -->
       <nav class="main-nav" aria-label="主导航">
-        <span class="nav-section-label">工作台</span>
+        <span class="nav-section-label">业务协同控制台</span>
         <RouterLink
           v-for="item in navItems"
           :key="item.to"
@@ -123,7 +150,9 @@ onMounted(loadNotifications)
           class="nav-item"
           :class="{ active: route.path.startsWith(item.to) }"
         >
-          <component :is="item.icon" :size="18" />
+          <div class="nav-icon-wrapper">
+            <component :is="item.icon" :size="18" />
+          </div>
           <span class="nav-label">
             <strong>{{ item.label }}</strong>
             <small>{{ item.note }}</small>
@@ -132,14 +161,15 @@ onMounted(loadNotifications)
         </RouterLink>
       </nav>
 
+      <!-- Sidebar Footer -->
       <div class="sidebar-footer">
         <button class="sidebar-action" @click="resetDemo">
-          <RotateCcw :size="16" />
-          <span>恢复演示初始数据</span>
+          <RotateCcw :size="15" />
+          <span>重置演示数据</span>
         </button>
-        <div class="sidebar-help">
-          <CircleHelp :size="15" />
-          <span>一老一小照护闭环</span>
+        <div class="system-status-indicator">
+          <span class="status-dot"></span>
+          <span>系统联动运行中</span>
         </div>
       </div>
     </aside>
@@ -153,14 +183,14 @@ onMounted(loadNotifications)
         </button>
 
         <div class="crumbs">
-          <span>春和里社区</span>
+          <span class="crumb-community">春和里社区</span>
           <i>/</i>
           <strong>{{ pageTitle }}</strong>
         </div>
 
         <div class="topbar-actions">
           <span class="system-pulse">
-            <i></i> 协同引擎正常
+            <i></i> 应急引擎就绪
           </span>
 
           <button
@@ -176,7 +206,7 @@ onMounted(loadNotifications)
             <Command :size="15" />
             <select :value="session.role ?? ''" aria-label="当前视角" @change="switchRole">
               <option v-for="(label, key) in roleLabels" :key="key" :value="key">
-                {{ label }}
+                {{ label }} ({{ roleDetails[key].name }})
               </option>
             </select>
             <ChevronDown :size="14" />
@@ -207,7 +237,7 @@ onMounted(loadNotifications)
           正在同步站内通知…
         </div>
         <div v-else-if="!notifications.length" class="notification-empty">
-          暂无通知记录
+          暂无未读通知
         </div>
         <div v-else class="notification-list">
           <button

@@ -57,7 +57,7 @@ function renderCharts() {
       borderColor: '#334155',
       borderRadius: 8,
       padding: [10, 14],
-      textStyle: { color: '#f8fafc', fontSize: 13, fontFamily: 'Inter, sans-serif' }
+      textStyle: { color: '#f8fafc', fontSize: 13, fontFamily: 'Plus Jakarta Sans, sans-serif' }
     },
     xAxis: {
       type: 'category',
@@ -65,7 +65,7 @@ function renderCharts() {
       data: summary.value.close_trend.map((item) => item.label),
       axisLine: { lineStyle: { color: '#e2e8f0' } },
       axisTick: { show: false },
-      axisLabel: { color: '#64748b', fontSize: 12, fontFamily: 'Inter, sans-serif' }
+      axisLabel: { color: '#64748b', fontSize: 12, fontFamily: 'Plus Jakarta Sans, sans-serif' }
     },
     yAxis: {
       type: 'value',
@@ -102,7 +102,7 @@ function renderCharts() {
       borderColor: '#334155',
       borderRadius: 8,
       padding: [10, 14],
-      textStyle: { color: '#f8fafc', fontSize: 13, fontFamily: 'Inter, sans-serif' }
+      textStyle: { color: '#f8fafc', fontSize: 13, fontFamily: 'Plus Jakarta Sans, sans-serif' }
     },
     xAxis: {
       type: 'value',
@@ -115,7 +115,7 @@ function renderCharts() {
       data: typeEntries.map(([key]) => typeLabels[key] ?? key),
       axisLine: { lineStyle: { color: '#e2e8f0' } },
       axisTick: { show: false },
-      axisLabel: { color: '#334155', fontSize: 13, fontWeight: 500, fontFamily: 'Inter, sans-serif' }
+      axisLabel: { color: '#334155', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans, sans-serif' }
     },
     series: [{
       type: 'bar',
@@ -175,9 +175,11 @@ onBeforeUnmount(() => {
   <div class="page-wrap">
     <header class="page-heading">
       <div>
-        <p class="eyebrow"><span class="eyebrow-dot"></span>社区看板 / 只读决策指标</p>
-        <h1>让社区知道，哪里需要下一步。</h1>
-        <p>指标来自后端照护事件与处置记录，不在浏览器里二次猜测。数据会随着接单、升级和关闭实时更新。</p>
+        <div class="page-title-row">
+          <h1>社区运行看板</h1>
+          <span class="page-status-tag">实时决策数据</span>
+        </div>
+        <p>汇聚全区照护事件、响应时效、风险分布及闭环处置统计数据</p>
       </div>
       <div class="heading-actions">
         <span class="icon-text muted-text">
@@ -190,7 +192,7 @@ onBeforeUnmount(() => {
     <div v-if="loading" class="loading-state">正在汇总社区指标…</div>
     <div v-else-if="error" class="empty-state">
       <Gauge :size="32" />
-      <strong>看板暂时读不到</strong>
+      <strong>看板读取失败</strong>
       <p>{{ error }}</p>
       <button class="button button-secondary" @click="load">重试</button>
     </div>
@@ -198,16 +200,16 @@ onBeforeUnmount(() => {
       <section class="metric-grid" aria-label="核心指标">
         <div class="metric-card accent-ink">
           <div class="metric-label">
-            <span>今日事件</span>
+            <span>今日总事件</span>
             <Activity :size="16" />
           </div>
           <strong class="metric-value">{{ summary.today_total }}</strong>
-          <small class="metric-note">当前社区全部来源</small>
+          <small class="metric-note">社区全部来源事件数</small>
         </div>
 
         <div class="metric-card accent-coral">
           <div class="metric-label">
-            <span>开放事件</span>
+            <span>开放处理中</span>
             <ShieldAlert :size="16" />
           </div>
           <strong class="metric-value">{{ summary.open_total }}</strong>
@@ -216,20 +218,20 @@ onBeforeUnmount(() => {
 
         <div class="metric-card accent-amber">
           <div class="metric-label">
-            <span>平均首次响应</span>
+            <span>平均响应时长</span>
             <Clock3 :size="16" />
           </div>
           <strong class="metric-value">{{ summary.average_first_response_minutes }}<span style="font-size: 16px; font-weight: 500; margin-left: 4px;">分钟</span></strong>
-          <small class="metric-note">基于已接单任务统计</small>
+          <small class="metric-note">已接单任务平均首次响应</small>
         </div>
 
         <div class="metric-card accent-mint">
           <div class="metric-label">
-            <span>超时率</span>
+            <span>超时升级率</span>
             <Gauge :size="16" />
           </div>
           <strong class="metric-value">{{ Math.round(summary.overdue_rate * 100) }}<span style="font-size: 16px; font-weight: 500; margin-left: 2px;">%</span></strong>
-          <small class="metric-note">开放事件中超时占比</small>
+          <small class="metric-note">开放事件中超时升级比例</small>
         </div>
       </section>
 
@@ -238,7 +240,7 @@ onBeforeUnmount(() => {
           <div class="panel-head">
             <div>
               <h2>最近七天关闭趋势</h2>
-              <p>每日完成关闭确认的事件数量</p>
+              <p>每日完成确认闭环的事件数量统计</p>
             </div>
             <span class="icon-text muted-text">
               <BarChart3 :size="16" />
@@ -289,7 +291,7 @@ onBeforeUnmount(() => {
           <div class="panel-head">
             <div>
               <h2>事件类型分布</h2>
-              <p>帮助调配社区响应力量，非医疗诊断</p>
+              <p>按业务场景分布统计</p>
             </div>
           </div>
           <div ref="typesRef" class="chart"></div>
@@ -298,8 +300,8 @@ onBeforeUnmount(() => {
         <section class="panel">
           <div class="panel-head">
             <div>
-              <h2>对象构成</h2>
-              <p>老人与儿童照护事件占比</p>
+              <h2>照护对象结构</h2>
+              <p>老人与儿童照护事件分类占比</p>
             </div>
           </div>
           <div class="type-list">
@@ -318,7 +320,7 @@ onBeforeUnmount(() => {
               <strong>{{ summary.subject_type_counts.CHILD || 0 }}</strong>
             </div>
             <p class="dashboard-footnote">
-              风险分级展示计算原因，页面文案统一使用“疑似异常 / 建议人工确认”。
+              风险等级由基准分与已知标签动态计算生成，供网格员与家属协同参考。
             </p>
           </div>
         </section>
