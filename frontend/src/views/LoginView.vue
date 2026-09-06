@@ -66,7 +66,6 @@ async function enter(role: Role) {
         </div>
         <div class="brand-titles">
           <span class="brand-name">邻里智护</span>
-          <span class="brand-tag">NEIGHBOR CARE</span>
         </div>
       </div>
 

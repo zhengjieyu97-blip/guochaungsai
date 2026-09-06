@@ -119,9 +119,8 @@ onMounted(loadNotifications)
         </div>
         <div class="sidebar-brand-text">
           <span class="brand-title">邻里智护</span>
-          <span class="brand-subtitle">NEIGHBOR CARE</span>
         </div>
-        <button class="icon-button sidebar-close" aria-label="关闭导航" @click="mobileOpen = false">
+        <button v-if="mobileOpen" class="icon-button sidebar-close" aria-label="关闭导航" @click="mobileOpen = false">
           <X :size="18" />
         </button>
       </div>

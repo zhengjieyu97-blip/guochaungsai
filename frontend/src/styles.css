@@ -248,6 +248,7 @@ a { color: inherit; text-decoration: none; }
 }
 .intro-copy h1 em {
   background: linear-gradient(120deg, #5eead4 0%, #38bdf8 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-style: normal;
