@@ -50,7 +50,7 @@ foreach ($connection in $connections) {
   if (Is-ProjectProcess -ProcessInfo $processInfo -Port ([int]$connection.LocalPort)) {
     Add-TargetProcess -ProcessId $processId
   } else {
-    Write-Warning ("端口 {0} 当前由其他进程占用，已跳过 PID {1}。" -f $connection.LocalPort, $processId)
+    Write-Warning ("Port {0} is owned by another process; skipped PID {1}." -f $connection.LocalPort, $processId)
   }
 }
 
@@ -67,16 +67,16 @@ foreach ($processId in @($targetIds)) {
 }
 
 if ($targetIds.Count -eq 0) {
-  Write-Host "没有发现邻里智护正在运行的服务。"
+  Write-Host "No Neighbor Care services were found on the requested ports."
   exit 0
 }
 
 foreach ($processId in ($targetIds | Sort-Object -Descending)) {
   try {
     Stop-Process -Id $processId -Force -ErrorAction Stop
-    Write-Host ("已停止 PID {0}" -f $processId)
+    Write-Host ("Stopped PID {0}" -f $processId)
   } catch {
-    Write-Warning ("无法停止 PID {0}：{1}" -f $processId, $_.Exception.Message)
+    Write-Warning ("Could not stop PID {0}: {1}" -f $processId, $_.Exception.Message)
   }
 }
 
@@ -84,8 +84,8 @@ Start-Sleep -Milliseconds 250
 $remaining = @(Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue | Where-Object { $_.LocalPort -in $ports })
 if ($remaining.Count -gt 0) {
   $remainingPorts = ($remaining | Select-Object -ExpandProperty LocalPort -Unique) -join ', '
-  Write-Warning "以下端口仍在监听：$remainingPorts。请检查占用它们的其他服务。"
+  Write-Warning "These ports are still listening: $remainingPorts. Check the other services using them."
   exit 1
 }
 
-Write-Host "邻里智护已停止。"
+Write-Host "Neighbor Care services stopped."
