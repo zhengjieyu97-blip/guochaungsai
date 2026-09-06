@@ -1,0 +1,18 @@
+[project]
+name = "neighbor-care-backend"
+version = "0.1.0"
+description = "邻里智护第一阶段 FastAPI 后端"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.110",
+  "uvicorn[standard]>=0.29",
+  "sqlalchemy>=2.0",
+  "pydantic>=2.0",
+  "httpx>=0.26",
+  "pytest>=8.0",
+  "alembic>=1.13",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
